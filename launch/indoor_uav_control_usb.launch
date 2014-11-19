@@ -1,6 +1,9 @@
 <launch>
+    <include file="$(find visualeyez_tracker)/launch/tracker_pixhawk.launch"/>
+    <!-- <node pkg="rosservice" type="rosservice" name="" args="" launch-prefix="$(find indoor_uav_control)/launch/createRobotPosePublisher.sh"/> -->
+    <node pkg="rosservice" type="rosservice" name="" args="call --wait /add_robot_tracker '{robot_name: 'uav', origin_marker_id: &quot;508&quot;, x_marker_id: &quot;507&quot;, y_marker_id: &quot;509&quot;}' " />
     <arg name="fcu_url" default="/dev/ttyACM0:57600" />
-    <arg name="gcs_url" default="udp://10.0.0.106:14555@10.0.0.106:14550" />
+    <arg name="gcs_url" default="udp://10.0.0.107:14555@10.0.0.107:14550" />
     <arg name="system_id" default="1" />
     <arg name="component_id" default="50" />    
     <arg name="target_system_id" default="1" />
