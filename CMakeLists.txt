@@ -82,12 +82,12 @@ find_package(Eigen REQUIRED)
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
+#catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES kuri_uav
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
-)
+#)
 
 ###########
 ## Build ##
@@ -98,9 +98,13 @@ catkin_package(
 # include_directories(include)
 
 ## Declare a cpp library
-# add_library(kuri_uav
-#   src/${PROJECT_NAME}/kuri_uav.cpp
-# )
+#add_library(
+#kuri_uav
+   #src/${PROJECT_NAME}/kuri_uav.cpp
+  # ~/workspace/c_uart_interface_example/src/indoor_uav_control/mavlink/include/mavlink/v1.0
+  #~/workspace/catkin_ws/src/c_uart_interface_example/mavlink/include/mavlink/v1.0/common/mavlink.h
+#)
+ #)
 
 ## Declare a cpp executable
 # add_executable(uav_node src/kuri_uav_node.cpp)
@@ -117,6 +121,10 @@ catkin_package(
 include_directories(include
 ${catkin_INCLUDE_DIRS}
 ${Eigen_INCLUDE_DIRS}
+ #~/workspace/c_uart_interface_example/src/indoor_uav_control/mavlink/include/mavlink/v1.0
+
+./mavlink/include/mavlink/v1.0
+
 )
 
 #############
@@ -155,9 +163,19 @@ ${Eigen_INCLUDE_DIRS}
 # )
 
 add_executable(position_control src/position_control.cpp)
-
 target_link_libraries(position_control
 ${catkin_LIBRARIES}
+)
+include_directories(
+ ./mavlink/include/mavlink/v1.0
+)
+
+add_executable(mavlink_control src/autopilot_interface.cpp src/mavlink_control.cpp src/serial_port.cpp)
+
+target_link_libraries(mavlink_control
+${catkin_LIBRARIES} -lpthread 
+${Eigen_LIBRARIES}
+
 )
 
 #############
