@@ -9,6 +9,7 @@ find_package(catkin REQUIRED
  roscpp
  rospy
  std_msgs
+ dynamic_reconfigure
 )
 
 find_package(Eigen REQUIRED)
@@ -118,6 +119,9 @@ find_package(Eigen REQUIRED)
 #   ${catkin_LIBRARIES}
 # )
 
+generate_dynamic_reconfigure_options(
+  cfg/simInt.cfg 
+)
 include_directories(include
 ${catkin_INCLUDE_DIRS}
 ${Eigen_INCLUDE_DIRS}
@@ -170,15 +174,15 @@ include_directories(
  ./mavlink/include/mavlink/v1.0
 )
 
-add_executable(mavlink_control src/autopilot_interface.cpp src/mavlink_control.cpp src/serial_port.cpp)
+#add_executable(mavlink_control src/autopilot_interface.cpp src/mavlink_control.cpp src/serial_port.cpp)
 
-target_link_libraries(mavlink_control
-${catkin_LIBRARIES} -lpthread 
-${Eigen_LIBRARIES}
+#target_link_libraries(mavlink_control
+#${catkin_LIBRARIES} -lpthread 
+#${Eigen_LIBRARIES}
 
-)
-
-#############
+#)
+#add_dependencies(mavlink_control ${PROJECT_NAME}_gencfg)
+############
 ## Testing ##
 #############
 
