@@ -53,9 +53,6 @@ class Setpoint:
             thread.start_new_thread(self.navigate, () )
         except:
             print "Error: Unable to start thread"
-        # TODO(simon): Clean this up.
-        self.done = False
-        self.done_evt = threading.Event()
         sub = rospy.Subscriber('/cmd_vel_test', TwistStamped, self.velocityCallback)
 
     def navigate(self):
@@ -75,31 +72,18 @@ class Setpoint:
             print "Published velocity to auto x:" + str(self.x) + " y:" + str(self.y) + " z:" + str(self.z) + " yaw:" + str(self.yaw)   
             rate.sleep()
 
-    def set(self, x, y, z,yaw, delay=0, wait=True):
+    def set(self, x, y, z,yaw, delay=0):
         print("Set") 
-        # I should call this function when I do subscribe to my data         
-        self.done = False
         self.x = x
         self.y = y
         self.z = z
         self.yaw = yaw 
-
-        if wait:
-            rate = rospy.Rate(5)
-            while not self.done:
-                rate.sleep()
-
         time.sleep(delay)
 
 
     def velocityCallback(self, topic):
         print("Got vel");
-        #print topic.twist.linear.x ;  
         self.set( topic.twist.linear.x ,  topic.twist.linear.y ,topic.twist.linear.z , topic.twist.angular.z,  0, False) 
-
-    	self.done = False ; 
-        self.done_evt.set() ;
-         
 
 def setpoint_demo():
     pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
@@ -109,15 +93,10 @@ def setpoint_demo():
 
     while not rospy.is_shutdown():
         rate.sleep()
-#    print "Climb"
-#    setpoint.set(0.1, 0.0, 1.0, 0) #  called a function from the class // I should send my data here 
-    #print "DONE"
     print "Bye!"
-
 
 if __name__ == '__main__':
 	try:
   		setpoint_demo()
 	except rospy.ROSInterruptException:
 		pass
-
