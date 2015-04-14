@@ -119,9 +119,6 @@ find_package(Eigen REQUIRED)
 #   ${catkin_LIBRARIES}
 # )
 
-generate_dynamic_reconfigure_options(
-  cfg/simInt.cfg 
-)
 include_directories(include
 ${catkin_INCLUDE_DIRS}
 ${Eigen_INCLUDE_DIRS}
