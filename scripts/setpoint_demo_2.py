@@ -105,8 +105,12 @@ def setpoint_demo():
  
  
     print "move in x axis 1 meter "
-    setpoint.set(0.5, 1.0, -1.0, 0)
+    setpoint.set(1.0, 1.0, 1.0, 0)
     
+    time.sleep(10)
+    
+    print "position 2  "
+    setpoint.set(0.0, 0.0, 1.0, 0)
     
     while not rospy.is_shutdown():
       print "NOT MANUAL" 

@@ -83,7 +83,7 @@ class Setpoint:
 
     def velocityCallback(self, topic):
         print("Got vel");
-        self.set( topic.twist.linear.x ,  topic.twist.linear.y ,topic.twist.linear.z , topic.twist.angular.z,  0, False) 
+        self.set( topic.twist.linear.x ,  topic.twist.linear.y ,topic.twist.linear.z , topic.twist.angular.z,  0) 
 
 def setpoint_demo():
     pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
