@@ -38,6 +38,8 @@ from mavros.utils import *
 from std_msgs.msg import Header
 from std_msgs.msg import String
 from tf.transformations import quaternion_from_euler
+from subprocess import call
+
 
 class Setpoint:
 
@@ -54,6 +56,7 @@ class Setpoint:
         except:
             print "Error: Unable to start thread"
         sub = rospy.Subscriber('/cmd_vel_test', TwistStamped, self.velocityCallback)
+
 
     def navigate(self):
         print("navigate") 
@@ -86,6 +89,8 @@ class Setpoint:
         self.set( topic.twist.linear.x ,  topic.twist.linear.y ,topic.twist.linear.z , topic.twist.angular.z,  0) 
 
 def setpoint_demo():
+    ##call(["rosrun", "mavros", "mavsys" , "mode" ,"-c", "OFFBOARD"]);
+
     pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
     rospy.init_node('vel', anonymous=True)
     rate = rospy.Rate(10) 
