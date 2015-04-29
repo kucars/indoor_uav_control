@@ -141,7 +141,7 @@ class Setpoint:
 
  
     def reached(self, topic):
-        poly = [(0,-1.6), (-1.0,0.5), (0.4,2.4), (2.0,0.0)]
+        poly = [(0.3,1.6), (-1.04,0.5), (0.07,-0.9), (1.7,0.7)]
         if (self.init_data == True ):
             self.pre_pose_x =  topic.pose.position.x ; 
             self.pre_pose_y =  topic.pose.position.y ; 

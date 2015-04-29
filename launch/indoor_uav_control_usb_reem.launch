@@ -1,4 +1,21 @@
 <launch>
+       <!-- static_transform_publisher --> 
+   <node pkg="tf" type="static_transform_publisher" name="laser" args="0 0 0 0 0 3.14   /uav/baselink_ENU /laser 200"/>
+   <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 1 map world 500" />
+   
+        
+        <!-- laser --> 
+
+   <node name="hokuyo" pkg="hokuyo_node" type="hokuyo_node" >
+    <param name="port" type="string" value="/dev/ttyACM1" />
+   <!-- <param name="angle_min" type="double" value="-0.78" /> -->
+   <!-- <param name="angle_max" type="double" value="0.78" />  --> 
+    <param name="skip" type="int" value="2" />
+    </node>
+   
+   
+           <!-- visualeyez_tracker  --> 
+
     <include file="$(find visualeyez_tracker)/launch/tracker_pixhawk_refactor.launch"/>
     <!-- <node pkg="rosservice" type="rosservice" name="" args="" launch-prefix="$(find indoor_uav_control)/launch/createRobotPosePublisher.sh"/> -->
     <node pkg="rosservice" type="rosservice" name="" args="call --wait /add_robot_tracker '{robot_name: 'uav', origin_marker_id: &quot;403&quot;, x_marker_id: &quot;402&quot;, y_marker_id: &quot;401&quot;}' " />
@@ -8,6 +25,8 @@
     <arg name="component_id" default="50" />
     <arg name="target_system_id" default="1" />
     <arg name="target_component_id" default="50" />
+    
+    
     <include file="$(find mavros)/launch/node.launch">
         <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
         <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
@@ -18,6 +37,7 @@
     </include>
     
     
+ 
 <!--    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/> --> 
 </launch>
 

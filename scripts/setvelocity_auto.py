@@ -206,15 +206,46 @@ def setpoint_demo():
     setpoint = Setpoint(pub, rospy)
  
     
-    print "move in x axis 1 meter "
-    setpoint.set(-0.25, 0.0, 0.0, 0)
+    print "move in y axis -0.15 meter "
+    setpoint.set(0.0, -0.25, 0.0, 0)
     
-    time.sleep(5)
+    time.sleep(7)
     
-    print "move in -x axis 1 meter "
-    setpoint.set(0.25, 0.0, 0.0, 0)
+    print "move in y axis 0.15 meter "
+    setpoint.set(0.0, 0.25, 0.0, 0)
     
-    time.sleep(5)
+    time.sleep(7)
+    
+    print "move in y axis -0.15 meter "
+    setpoint.set(0.0, -0.25, 0.0, 0)
+    
+    time.sleep(7)
+    
+    print "move in y axis 0.15 meter "
+    setpoint.set(0.0, 0.25, 0.0, 0)
+    
+    time.sleep(7)
+
+    print "move in y axis -0.15 meter "
+    setpoint.set(0.0, -0.25, 0.0, 0)
+    
+    time.sleep(7)
+    
+    print "move in y axis 0.15 meter "
+    setpoint.set(0.0, 0.25, 0.0, 0)
+    
+    time.sleep(7)
+    
+    print "move in y axis -0.15 meter "
+    setpoint.set(0.0, -0.25, 0.0, 0)
+    
+    time.sleep(7)
+    
+    print "move in y axis 0.15 meter "
+    setpoint.set(0.0, 0.25, 0.0, 0)
+    
+    time.sleep(7)
+    
     
     setpoint.set(0, 0.0, 0.0, 0)
     time.sleep(1)
