@@ -177,7 +177,7 @@ class Setpoint:
                     self.z = self.current_pose_z ; 
                 else: 
                     #print topic.pose.position.z, self.z, abs(topic.pose.position.z - self.z)
-                    if abs(topic.pose.position.x - self.x) < 0.2 and abs(topic.pose.position.y - self.y) < 0.2 and abs(topic.pose.position.z - self.z) < 0.2:
+                    if abs(topic.pose.position.x - self.x) < 0.1 and abs(topic.pose.position.y - self.y) < 0.1 and abs(topic.pose.position.z - self.z) < 0.1:
                         self.done = True
     	            print self.done
                     print "Current Pose:",topic.pose.position.x,topic.pose.position.y,topic.pose.position.z
@@ -192,7 +192,7 @@ def setpoint_demo():
     setpoint = Setpoint(pub, rospy)
  
     print "move in x axis 1 meter "
-    setpoint.set(0.5, 1.0, -1.0, 0)
+    setpoint.set(1.0, 1.0, -1.0, 0)
     
     
     while not rospy.is_shutdown():

@@ -66,13 +66,12 @@ class Setpoint:
         self.pre_yaw = 0.0 
         self.init_data = True 
         self.inCollision = False ; 
-
+        self.lastVelTime = time.time()
         try:
             thread.start_new_thread( self.navigate, () )
         except:
             print "Error: Unable to start thread"
  
-        # TODO(simon): Clean this up.
         self.done = False
         self.done_evt = threading.Event()
         sub = rospy.Subscriber('/mavros/local_position/local', PoseStamped, self.reached)
@@ -116,19 +115,22 @@ class Setpoint:
         msg.header = Header() 
         msg.header.frame_id = "base_footprint"
         msg.header.stamp = rospy.Time.now()
- 
+        
         while 1:
-	    if (self.inCollision):
+	    print "Time since last vel:", (time.time() - self.lastVelTime)
+	    if (self.inCollision or (time.time() - self.lastVelTime)>1.0):
 	     # print "inCollision"
 	      msg.twist.linear.x = 0  #self.x
 	      msg.twist.linear.y = 0 #self.y
 	      msg.twist.linear.z = 0 #self.z
-	      msg.twist.angular.z = self.yaw 
+	      msg.twist.angular.z = 0 
             else:
 	      msg.twist.linear.x = self.x
 	      msg.twist.linear.y = self.y
 	      msg.twist.linear.z = self.z
 	      msg.twist.angular.z = self.yaw 
+	      print "Sending vel"
+	    #print "collision:", self.inCollision
             # For demo purposes we will lock yaw/heading to north.
             #yaw_degrees = 0  # North
             #yaw = radians(yaw_degrees)
@@ -154,6 +156,7 @@ class Setpoint:
  
     def velocityCallback(self, topic):
         #print("Got vel");
+        self.lastVelTime = time.time()
         self.set( topic.twist.linear.x ,  topic.twist.linear.y ,topic.twist.linear.z , topic.twist.angular.z,  0) 
 
  
@@ -216,7 +219,7 @@ class Setpoint:
 	      self.done = True
 	    else:
 	      print "Robot still inside" 
-              print "yaw" , self.current_yaw ;       
+              #print "yaw" , self.current_yaw ;       
 	      #print topic.pose.position.z, self.z, abs(topic.pose.position.z - self.z)
                     #if abs(topic.pose.position.x - self.x) < 0.2 and abs(topic.pose.position.y - self.y) < 0.2 and abs(topic.pose.position.z - self.z) < 0.2:
                     #    self.done = True
@@ -249,7 +252,6 @@ def setpoint_demo():
     print "You can stop now"
     '''
     while not rospy.is_shutdown():
-      print"done"
       rate.sleep()
    # print "move in -x axis 1 meter "
    # setpoint.set(-1.0, 0.0, 1.0, 0)

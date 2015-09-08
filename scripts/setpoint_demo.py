@@ -91,72 +91,26 @@ class Setpoint:
 
     def reached(self, topic):
             #print topic.pose.position.z, self.z, abs(topic.pose.position.z - self.z)
-            if abs(topic.pose.position.x - self.x) < 0.5 and abs(topic.pose.position.y - self.y) < 0.5 and abs(topic.pose.position.z - self.z) < 0.5:
+            if abs(topic.pose.position.x - self.x) < 0.2 and abs(topic.pose.position.y - self.y) < 0.2 and abs(topic.pose.position.z - self.z) < 0.2:
                 self.done = True
-
+            print "Current Pose:",topic.pose.position.x,topic.pose.position.y,topic.pose.position.z
+            print "Set Pose:",self.x,self.y,self.z
             self.done_evt.set()
 
 def setpoint_demo():
-    pub = rospy.Publisher('/mavros/setpoint_position/local_position', PoseStamped, queue_size=10)
+    pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
     
     rospy.init_node('pose', anonymous=True)
     rate = rospy.Rate(10) 
 
     setpoint = Setpoint(pub, rospy)
 
-    print "Climb"
-    setpoint.set(0.0, 0.0, 3.0, 0)
-    setpoint.set(0.0, 0.0, 10.0, 5)
-
-    print "Sink"
-    setpoint.set(0.0, 0.0, 8.0, 5)
-
-    print "Fly to the right"
-    setpoint.set(10.0, 4.0, 8.0, 5)
-
-    print "Fly to the left"
-    setpoint.set(0.0, 0.0, 8.0, 5)
-
-    offset_x = 0.0
-    offset_y = 0.0
-    offset_z = 10.0
-    sides = 360
-    radius = 20
-
-    print "Fly in a circle"
-    setpoint.set(0.0, 0.0, 10.0, 3)   # Climb to the starting height first
-    i = 0
+    print "move in x axis 1 meter "
+    setpoint.set(0.0, 1.0, 1.2, 0)
+    
+    
     while not rospy.is_shutdown():
-        x = radius * cos(i*2*pi/sides) + offset_x   
-        y = radius * sin(i*2*pi/sides) + offset_y
-        z = offset_z
-
-        wait = False
-        delay = 0
-        if (i == 0 or i == sides):
-            # Let it reach the setpoint.
-            wait = True
-            delay = 5
-
-        setpoint.set(x, y, z, delay, wait)
-
-        i = i + 1 
-        rate.sleep()
-
-        if (i > sides):
-            print "Fly home"
-            setpoint.set(0.0, 0.0, 10.0, 5)
-            break
-
-    # Simulate a slow landing.
-    setpoint.set(0.0, 0.0,  8.0, 5)
-    setpoint.set(0.0, 0.0,  3.0, 5)
-    setpoint.set(0.0, 0.0,  2.0, 2)
-    setpoint.set(0.0, 0.0,  1.0, 2)
-    setpoint.set(0.0, 0.0,  0.0, 2)
-    setpoint.set(0.0, 0.0, -0.2, 2)
-
-    print "Bye!"
+      print "NOT MANUAL" 
 
 
 if __name__ == '__main__':

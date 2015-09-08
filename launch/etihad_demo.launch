@@ -1,0 +1,30 @@
+<launch>
+    <!-- static_transform_publisher --> 
+    <node pkg="tf" type="static_transform_publisher" name="laser" args="0 0 0 0 0 3.14   /world /laser 200"/>
+    <node pkg="tf" type="static_transform_publisher" name="rgbd" args="0 0 0 0 0 0   /world /camera_link 200"/>
+    <node name="hokuyo" pkg="hokuyo_node" type="hokuyo_node" >
+      <param name="port" type="string" value="/dev/ttyACM0" />
+      <param name="skip" type="int" value="0" />
+    </node>
+    <!-- mavros -->
+    <!-- arg name="fcu_url" default="/dev/ttyUSB0:921600" /-->
+    <arg name="fcu_url" default="/dev/ttyACM1:57600" />
+    <arg name="gcs_url" default="udp://$(env ROS_IP):14555@$(env ROS_IP):14550" />
+    <arg name="system_id" default="1" />
+    <arg name="component_id" default="50" />
+    <arg name="target_system_id" default="1" />
+    <arg name="target_component_id" default="50" />
+    
+    <include file="$(find mavros)/launch/node.launch">
+        <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
+        <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
+        <arg name="fcu_url" value="$(arg fcu_url)" />
+        <arg name="gcs_url" value="$(arg gcs_url)" />
+        <arg name="tgt_system" value="$(arg target_system_id)" />
+        <arg name="tgt_component" value="$(arg target_component_id)" />
+    </include>
+    
+    <!--node  name="visensor_node" pkg="visensor_node" type="visensor_node" clear_params="true" output="screen"></node--> 
+    <include file="$(find openni2_launch)/launch/openni2.launch"/>
+    <include file="$(find laser_collision_detection)/launch/laser_collision_detection.launch"/>
+</launch>

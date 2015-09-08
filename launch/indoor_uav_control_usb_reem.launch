@@ -20,7 +20,7 @@
     <!-- <node pkg="rosservice" type="rosservice" name="" args="" launch-prefix="$(find indoor_uav_control)/launch/createRobotPosePublisher.sh"/> -->
     <node pkg="rosservice" type="rosservice" name="" args="call --wait /add_robot_tracker '{robot_name: 'uav', origin_marker_id: &quot;701&quot;, x_marker_id: &quot;702&quot;, y_marker_id: &quot;705&quot;}' " />
     <arg name="fcu_url" default="/dev/ttyACM0:57600" />
-    <arg name="gcs_url" default="udp://10.0.0.105:14555@10.0.0.105:14550" />
+    <arg name="gcs_url" default="udp://10.0.0.104:14555@10.0.0.105:14550" />
     <arg name="system_id" default="1" />
     <arg name="component_id" default="50" />
     <arg name="target_system_id" default="1" />
